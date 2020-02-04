@@ -11,7 +11,7 @@ namespace Tests_WeatherData
     [TestClass]
     public class Tests_WeatherData
     {
-        private static string filename = @"..\..\..\..\..\pond_data\Environmental_Data_Deep_Moor_2012.txt";
+        private static string filename = @"C:\repos\code-clinic-csharp\weatherApp\pond_data\Environmental_Data_Deep_Moor_2012.txt";
 
         #region Sample Data
         private static string sampleData =
@@ -82,11 +82,9 @@ namespace Tests_WeatherData
             {
                 text.ReadLine(); // ignore 1st line of text, it contains headers.
 
-                // TODO: Implement WeatherData.ReadRange
+                var data = WeatherData.ReadRange(text, start, end);
 
-                //Check.That(data.Count()).IsEqualTo(6);
-
-                throw new NotImplementedException();
+                Check.That(data.Count()).IsEqualTo(6);
             }
         }
 
@@ -100,13 +98,25 @@ namespace Tests_WeatherData
             {
                 text.ReadLine(); // ignore 1st line of text, it contains headers.
 
-                // Extract
-                // Transform
-                // Load
+                var data = from wo in WeatherData.ReadRange(text, start, end) // Extract
+                           select new // Transforming
+                           {
+                               Hours = (wo.TimeStamp - start).TotalHours,
+                               wo.Barometric_Pressure
+                           };
 
-                // MathNet.Numerics.Fit.Line(...);
+                var arrX = new List<double>();
+                var arrY = new List<double>();
 
-                throw new NotImplementedException();
+                foreach (var wo in data) // Load
+                {
+                    arrX.Add(wo.Hours);
+                    arrY.Add(wo.Barometric_Pressure);
+                }
+
+                var (intersect, slope) = MathNet.Numerics.Fit.Line(arrX.ToArray(), arrY.ToArray());
+
+                Check.That(slope).IsLessThan(0);
             }
         }
     }
