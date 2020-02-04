@@ -53,11 +53,9 @@ namespace Tests_WeatherData
             {
                 text.ReadLine(); // ignore 1st line of text, it contains headers.
 
-                // TODO: Implement WeatherData.ReadAll
+                var data = WeatherData.ReadAll(text);
 
-                // Check.That(data.Count()).IsEqualTo(4);
-
-                throw new NotImplementedException();
+                Check.That(data.Count()).IsEqualTo(4);
             }
         }
 
@@ -68,11 +66,9 @@ namespace Tests_WeatherData
             {
                 text.ReadLine(); // ignore 1st line of text, it contains headers.
 
-                //var data = WeatherData.ReadAll(text);
+                var data = WeatherData.ReadAll(text);
 
-                //Check.That(data.Count()).IsEqualTo(70675);
-
-                throw new NotImplementedException();
+                Check.That(data.Count()).IsEqualTo(70675);
             }
         }
 
